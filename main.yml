@@ -1,0 +1,35 @@
+---
+- hosts: [ansible_clients]
+  remote_user: root
+  tasks:
+    - name: packages updated
+      yum:
+        update_cache=yes
+
+    - name: Install vim packages
+      yum:
+        name: vim*
+
+    - name: Install apache servers
+      yum:
+        name: httpd
+        state: latest
+
+    - name: Updated firewall packages install
+      yum:
+        name: firewalld
+        state: latest
+
+    - name: Allow Firewalld
+      firewalld:
+        service: http
+        permanent: true
+        state: enabled
+        immediate: yes
+
+    - name: Enable and Start the http service
+      service:
+        name: httpd
+        enabled: true
+        state: started
+
