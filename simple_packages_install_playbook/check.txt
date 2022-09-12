@@ -2,5 +2,6 @@ ansible "*" -m ping
 ansible all -m ping
 ansible all -m ping -o
 ansible all --list-hosts
+ansible all -m ping -e "ansible_port=22" -o
 
 ansible all -m command -a 'id' -o
