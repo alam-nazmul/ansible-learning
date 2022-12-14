@@ -1,0 +1,34 @@
+-
+        name: play1
+        hosts: test
+        tasks:
+                - name: Stop web server
+                  service:
+                          name: httpd
+                          state: stopped
+
+ 
+
+                - name: Package upgrade
+                  command:
+                          cmd: dnf autoremove -y
+
+                - name: Remove httpd service
+                  yum:
+                          name: httpd
+                          state: absent
+
+ 
+
+                - name: Remove firewall
+                  firewalld:
+                          permanent: yes
+                          service: http
+                          state: disabled
+
+ 
+
+                - name: Reload firewalld
+                  systemd:
+                          name: firewalld
+                          state: reloaded

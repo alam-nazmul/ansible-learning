@@ -1,0 +1,43 @@
+-
+        name: play1
+        hosts: test
+        tasks:
+                - name: Packages update
+                  dnf:
+                          name: "*"
+                          state: latest
+
+ 
+
+                - name: Package upgrade
+                  command:
+                          cmd: dnf upgrade -y
+
+ 
+
+                - name: Install httpd service
+                  yum:
+                          name: httpd
+                          state: present
+
+ 
+
+                - name: Start web server
+                  service:
+                          name: httpd
+                          state: started
+
+ 
+
+                - name: Allow firewall
+                  firewalld:
+                          permanent: yes
+                          service: http
+                          state: enabled
+
+ 
+
+                - name: Reload firewalld
+                  systemd:
+                          name: firewalld
+                          state: reloaded
