@@ -1,0 +1,23 @@
+RUNNING AD HOC COMMANDS WITH ANSIBLE
+An ad hoc command is a way of executing a single Ansible task quickly, one that you do not need to save to run again later.
+They are simple, online operations that can be run without writing aplaybook.
+Ad hoc commands are useful for quick tests and changes. For example, you can use an ad hoc
+command to make sure that a certain line exists in the /etc/hosts file on a group of servers. You
+could use another ad hoc command to efficiently restart a service on many different machines, or
+to ensure that a particular software package is up-to-date.
+Ad hoc commands are very useful for quickly performing simple tasks with Ansible. They do
+have their limits, and in general you will want to use Ansible Playbooks to realize the full power of
+Ansible. In many situations, however, ad hoc commands are exactly the tool you need to perform
+simple tasks quickly.
+
+
+
+Ansible Command-line Options
+inventory || -i
+remote_user || -u
+become --become, || -b
+become_method || --become-method
+become_user || --become-user
+become_ask_pass || --ask-become-pass, -K
+Before configuring these directives using command-line options, their currently defined values can
+be determined by consulting the output of ansible --help.

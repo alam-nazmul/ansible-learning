@@ -1,0 +1,25 @@
+When in doubt, use the ansible command to verify a machine's presence in the inventory:
+```
+[user@controlnode ~]$ ansible washington1.example.com --list-hosts
+```
+
+
+You can run the following command to list all hosts in a group:
+```
+[user@controlnode ~]$ ansible canada --list-hosts
+```
+
+
+[student@workstation ~]$ ansible ungrouped --list-hosts
+
+[student@workstation ~]$ ansible webservers --list-hosts
+
+
+Ansible Configuration
+inventory || Specifies the path to the inventory file.
+remote_user || The name of the user to log in as on the managed hosts. If not specified, the current user's name is used.
+ask_pass || Whether or not to prompt for an SSH password. Can befalse if using SSH public key authentication.
+become || Whether to automatically switch user on the managedhost (typically to root) after connecting. This can also be specified by a play.
+become_method || How to switch user (typically sudo, which is the default, but su is an option).
+become_user || The user to switch to on the managed host (typically root, which is the default).
+become_ask_pass || Whether to prompt for a password for your become_method. Defaults to false.
