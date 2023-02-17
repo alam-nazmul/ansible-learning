@@ -1,0 +1,10 @@
+---
+- name: User create with uid
+  hosts: targets
+  become: true
+  tasks:
+    - name: Create a user
+      user:
+        name: alam
+        uid: 4000
+        state: present

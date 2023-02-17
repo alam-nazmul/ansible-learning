@@ -1,0 +1,9 @@
+Executing a Dry Run
+You can use the -C option to perform a dry run of the playbook execution. This causes Ansible to
+report what changes would have occurred if the playbook were executed, but does not make any
+actual changes to managed hosts.
+The following example shows the dry run of a playbook containing a single task for ensuring that
+the latest version of httpd package is installed on a managed host. Note that the dry run reports
+that the task would effect a change on the managed host.
+
+[student@workstation ~]$ ansible-playbook -C webserver.yml  

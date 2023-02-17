@@ -1,0 +1,14 @@
+---
+- name: Enable the services
+  hosts: all
+  become: true
+  tasks:
+    - name: Web service enable
+      service:
+        name: httpd
+        enabled: yes
+    
+    - name: NTP service enable
+      service:
+        name: chronyd
+        enabled: yes
