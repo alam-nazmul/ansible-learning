@@ -1,0 +1,10 @@
+When in doubt, use the ansible command to verify a machine's presence in the inventory:
+```
+[user@controlnode ~]$ ansible washington1.example.com --list-hosts
+```
+
+
+You can run the following command to list all hosts in a group:
+```
+[user@controlnode ~]$ ansible canada --list-hosts
+```

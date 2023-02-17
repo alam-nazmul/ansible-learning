@@ -1,0 +1,25 @@
+[webservers]
+web1.example.com
+web2.example.com
+192.0.2.42
+
+[db-servers]
+db1.example.com
+db2.example.com
+
+
+
+### Defining Nested Groups
+[usa]
+washington1.example.com
+washington2.example.com
+
+
+[canada]
+ontario01.example.com
+ontario02.example.com
+
+
+[north-america:children]
+canada
+usa
