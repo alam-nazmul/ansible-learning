@@ -1,0 +1,2 @@
+[targets]
+test    ansible_host=172.16.7.215     ansible_user=almalinux     ansible_ssh_extra_args="-o StrictHostKeyChecking=no"

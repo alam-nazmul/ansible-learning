@@ -1,0 +1,45 @@
+---
+- name: Redhat book IMPLEMENTING MULTIPLE PLAYS
+  hosts: targets
+  become: yes
+  tasks:
+    - name: Install required packages
+      dnf:
+        name:
+          - firewalld
+          - httpd
+          - mariadb-server
+          - php
+          - php-mysqlnd
+        state: latest 
+
+    - name: Enable firewalld service
+      service:
+        name: firewalld
+        enabled: yes
+        state: started
+
+    - name: Allow httpd port on firewall
+      firewalld:
+        service: http
+        permanent: yes
+        immediate: yes
+        state: enabled
+
+    - name: Enable web service
+      service:
+        name: httpd
+        enabled: yes
+        state: started
+      
+    - name: Enable DB service
+      service:
+        name: mariadb
+        enabled: yes
+        state: started
+
+    - name: Modify the web page
+      get_url:
+        url: http://www.google.com
+        dest: /var/www/html/index.php
+        mode: 0644

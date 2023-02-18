@@ -1,0 +1,12 @@
+---
+- name: Install a package with print result
+  hosts: targets
+  become: true
+  tasks:
+    - name: Install http pkg
+      dnf:
+        name: httpd
+        state: present
+      register: install_result
+    - debug:
+        var: install_result
