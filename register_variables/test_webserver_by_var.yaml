@@ -1,0 +1,43 @@
+---
+- name: Deploy and Start the HTTP server by variables
+  hosts: targets
+  become: yes
+  vars:
+    web_pkg: httpd
+    firewall_pkg: firewalld
+    web_service: httpd
+    firewalld_service: firewalld
+    mysql_pkg: python3-PyMySQL
+    rule: http
+  tasks:
+    - name: Install the required packages
+      dnf:
+        name:
+          - "{{ web_pkg }}"
+          - "{{ firewall_pkg }}"
+          - "{{ mysql_pkg }}"
+        state: present
+
+    - name: Enable the {{ firewalld_service }} service
+      service:
+        name: "{{ firewalld_service }}"
+        enabled: yes
+        state: started
+
+    - name: Allow {{ web_service }} port on {{ firewalld_service }}
+      firewalld:
+        service: "{{ rule }}"
+        permanent: yes
+        immediate: yes
+        state: enabled
+
+    - name: Enable the {{ web_service }} service
+      service:
+        name: "{{ web_service }}"
+        enabled: yes
+        state: started
+
+    - name: Modify the web contain
+      copy:
+        content: "Hi, My name is Nazmul Alam"
+        dest: /var/www/html/index.html

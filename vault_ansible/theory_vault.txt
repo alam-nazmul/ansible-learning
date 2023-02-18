@@ -1,0 +1,28 @@
+Ansible Vault, which is included with Ansible, can be used to encrypt and decrypt any structured
+data file used by Ansible. To use Ansible Vault, a command-line tool named ansible-vault is
+used to create, edit, encrypt, decrypt, and view files. Ansible Vault can encrypt any structured data
+file used by Ansible. This might include inventory variables, included variable files in a playbook,
+variable files passed as arguments when executing the playbook, or variables defined in Ansible
+roles.
+
+
+Ansible Vault does not implement its own cryptographic functions but rather uses
+an external Python toolkit. Files are protected with symmetric encryption using
+AES256 with a password as the secret key. Note that the way this is done has not
+been formally audited by a third party.
+
+
+[student@demo ~]$ ansible-vault create secret.yml
+
+[student@demo ~]$ ansible-vault create --vault-password-file=vault-pass secret.yml
+
+[student@demo ~]$ ansible-vault view secret1.yml
+
+[student@demo ~]$ ansible-vault edit secret.yml
+
+[student@demo ~]$ ansible-vault encrypt secret1.yml secret2.yml
+
+[student@demo ~]$ ansible-vault decrypt secret1.yml --output=secret1-decrypted.yml
+
+[student@demo ~]$ ansible-vault rekey secret.yml
+

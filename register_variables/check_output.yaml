@@ -7,6 +7,6 @@
       dnf:
         name: httpd
         state: present
-      register: install_result
+      register: result
     - debug:
-        var: install_result
+        var: result
