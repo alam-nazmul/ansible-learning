@@ -1,0 +1,12 @@
+---
+- name: Install required pkgs by loop
+  hosts: targets
+  become: true
+  tasks:
+    - name: Install Postfix and Dovecot
+      dnf:
+        name: "{{ item }}"
+        state: present
+      loop:
+        - postfix
+        - dovecot

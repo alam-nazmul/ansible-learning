@@ -1,0 +1,14 @@
+---
+- name: Test variable is defined demo
+  hosts: targets
+  become: true
+  vars:
+    service_name:
+      - postfix
+      - nginx
+
+  tasks:
+    - name: Install {{ service_name }} packages
+      dnf:
+        name: "{{ service_name }}"
+      when: service_name is defined

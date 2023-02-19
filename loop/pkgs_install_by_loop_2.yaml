@@ -1,0 +1,23 @@
+---
+- name: Install required pkgs by loop
+  hosts: targets
+  become: true
+  vars:
+    mail_services:
+      - postfix
+      - dovecot
+  tasks:
+    - name: Install required packages
+      dnf:
+        name: "{{ item }}"
+        state: present
+      with_items:
+        "{{ mail_services }}"
+
+    - name: Enabled the services
+      service:
+        name: "{{ item }}"
+        enabled: yes
+        state: restarted
+      with_items: 
+        "{{ mail_services }}"

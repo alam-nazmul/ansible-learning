@@ -1,0 +1,22 @@
+---
+- name: Apply "in" keyword
+  hosts: targets
+  become: yes
+  ignore_errors: yes
+  vars:
+    supported_family:
+      - RedHat
+      - Debian
+  tasks:
+  - name: Install nginx using dnf, where supported
+    dnf:
+      name: nginx
+      state: present
+    when: ansible_os_family in supported_family
+
+  - name: Enable NGINX service
+    service:
+      name: nginx
+      enabled: yes
+      state: restarted
+    when: ansible_os_family in supported_family

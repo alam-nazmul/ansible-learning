@@ -1,0 +1,12 @@
+---
+- name: Simple boolean task
+  hosts: targets
+  become: true
+  vars:
+    run_task: yes
+    
+  tasks:
+    - name: Install nginx packages
+      dnf:
+        name: nginx
+      when: run_task

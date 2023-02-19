@@ -1,0 +1,9 @@
+[targets:children]
+alma
+ubuntu
+
+[alma]
+test_alma    ansible_host=172.16.7.215     ansible_user=almalinux     ansible_ssh_extra_args="-o StrictHostKeyChecking=no"
+
+[ubuntu]
+test_ubuntu    ansible_host=172.16.7.214     ansible_user=ubuntu     ansible_ssh_extra_args="-o StrictHostKeyChecking=no"
