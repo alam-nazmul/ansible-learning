@@ -1,0 +1,22 @@
+Handlers: running operations on change
+Sometimes you want a task to run only when a change is made on a machine. For example, you may want to restart a service if a task updates the configuration of that service, but not if the configuration is unchanged. Ansible uses handlers to address this use case. Handlers are tasks that only run when notified.
+
+
+
+DESCRIBING THE BENEFITS OF USING HANDLERS
+As discussed in the Ansible documentation, there are some important things to remember about
+using handlers:
+• Handlers always run in the order specified by the handlers section of the play. They do not
+run in the order in which they are listed by notify statements in a task, or in the order in which
+tasks notify them.
+• Handlers normally run after all other tasks in the play complete. A handler called by a task in the
+tasks part of the playbook will not run until all tasks under tasks have been processed. (There
+are some minor exceptions to this.)
+• Handler names exist in a per-play namespace. If two handlers are incorrectly given the same
+name, only one will run.
+• Even if more than one task notifies a handler, the handler only runs once. If no tasks notify it, a
+handler will not run.
+• If a task that includes a notify statement does not report a changed result (for example, a
+package is already installed and the task reports ok), the handler is not notified. The handler
+is skipped unless another task notifies it. Ansible notifies handlers only if the task reports the
+changed status.

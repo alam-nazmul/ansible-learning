@@ -1,0 +1,21 @@
+---
+- name: Implementing Handlers
+  hosts: alma
+  become: yes
+  tasks:
+    - name: Restart everything
+      command: echo "this task will restart the web services"
+      notify:
+        - restart apache
+        - restart postfix
+
+  handlers:
+    - name: restart apache
+      service:
+        name: httpd
+        state: restarted
+    
+    - name: restart postfix
+      service:
+        name: postfix
+        state: restarted
