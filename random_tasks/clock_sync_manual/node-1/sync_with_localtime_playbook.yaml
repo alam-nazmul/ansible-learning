@@ -1,0 +1,17 @@
+---
+- name: Modify the local timezone
+  hosts: node_1
+  become: true
+  gather_facts: no
+  tasks:
+    - name: Set timezone to Asia/Dhaka
+      timezone:
+        name: Asia/Dhaka
+        
+    - name: Disable the NTP sync
+      shell:
+        cmd: "timedatectl set-ntp 0"
+
+    - name: Set the clock manually
+      shell:
+        cmd: timedatectl set-time '2023-06-16 01:09:30'
