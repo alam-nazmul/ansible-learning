@@ -1,0 +1,34 @@
+---
+- name: Create a new user with sudo permission for Ansible operation on jamal production instances.
+  hosts: ufw_prod
+  gather_facts: yes
+  tasks:
+
+    - name: Create a new user for Devlop operation.
+      user:
+        name: teamdev
+        password: "{{ '**********' | password_hash('sha512', 'mysecrectsalt') }}"
+        comment: this user for dev operation
+        shell: /bin/bash
+        state: present
+        create_home: yes
+        home: "/home/teamdev"
+        groups: sudo
+
+    - name: Create the ssh directory for ansible user.
+      file:
+        path: /home/teamdev/.ssh
+        state: directory
+        mode: '0755'
+
+    - name: Copy my SSH auth key file to new user's directory.
+      copy:
+        src: ./authorized_keys
+        dest: /home/teamdev/.ssh/authorized_keys
+      notify: restart the ssh service
+      
+  handlers:
+    - name: restart the ssh service
+      service:
+        name: sshd
+        state: restarted

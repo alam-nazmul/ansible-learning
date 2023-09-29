@@ -1,0 +1,21 @@
+---
+- name: Enable UFW policy
+  hosts: all_vms
+  gather_facts: no
+  tasks:
+
+    - name: Enable ufw policies 
+      ufw:
+        state: enabled
+
+    - name: Reload the current UFW policies
+      ufw:
+        state: reloaded
+      notify: Enable and Start UFW service
+
+  handlers:
+    - name: Enable and Start UFW service
+      service:
+        name: ufw
+        enabled: yes
+        state: restarted

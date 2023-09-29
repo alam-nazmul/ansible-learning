@@ -1,0 +1,26 @@
+---
+- name: UFW rules for prevent the attack
+  hosts: kamal
+  gather_facts: yes
+  tasks:
+  
+    - name: Deny rules
+      ufw:
+        rule: deny
+        insert: 1
+        src: '{{ item }}'
+        comment: "Blocking unusual logging attempt"
+      loop:
+        - 172.20.0.0/16 
+        - 172.23.0.0/16
+
+    - name: Allow only jamal network
+      ufw:
+        rule: allow
+        insert: 3
+        src: '{{ item }}'
+        comment: "Allow only jamal internal network and kamal network"
+      loop:
+        - 192.168.190.0/24
+        - 172.19.19.100/32
+        - 192.168.19.43/32
