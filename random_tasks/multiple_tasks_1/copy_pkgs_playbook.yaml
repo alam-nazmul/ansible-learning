@@ -1,0 +1,11 @@
+---
+- name: Sent the required packages from local pkgs storage to targeted hosts
+  hosts: additional_docker
+  gather_facts: yes
+  tasks:
+
+    - name: Copy main files of all packages
+      copy:
+        src: /home/rockylinux/pkgs/
+        dest: /home/sre/pkgs/
+        mode: "0777"

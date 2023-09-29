@@ -1,0 +1,28 @@
+---
+- name: Install Docker package
+  hosts: additional_docker
+  gather_facts: yes
+  vars_files: vars.yaml
+  tasks:
+
+    - name: Change the targeted directory and install the packages by offline
+      shell:
+        chdir: '{{ item }}'
+        cmd: dpkg --install --force-all *.deb
+      loop:
+        "{{ docker_pre_pkgs }}"
+      notify: Install Docker main packages
+
+  handlers:
+    - name: Install Docker main packages
+      shell:
+        chdir: '{{ item }}'
+        cmd: dpkg --install --force-all *.deb
+      loop: "{{ docker_main_pkgs }}"
+
+    - name: Start and Enable Docker service
+      service:
+        name: docker.service
+        enabled: yes
+        state: restarted
+

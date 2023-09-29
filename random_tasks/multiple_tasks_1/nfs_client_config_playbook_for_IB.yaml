@@ -1,0 +1,33 @@
+---
+- name: Permanent NFS client mount for IB log
+  hosts: nfs_jamal
+  gather_facts: yes
+  tasks:
+
+    - name: Create NFS directory
+      file:
+        path: /var/log/jamal_1
+        state: directory
+        owner: ubuntu
+        group: ubuntu
+        mode: '0755'
+
+    - name: Mount an NFS volume
+      ansible.posix.mount:
+        src: 192.168.190.60:/var/log/ib
+        path: /var/log/jamal_1
+        opts: rw,sync,hard,auto
+        state: mounted
+        fstype: nfs
+      notify: Reload the NFS demon
+
+  handlers:
+    - name: Reload the NFS demon
+      shell:
+        cmd: rm /lib/systemd/system/nfs-common.service; systemctl daemon-reload
+
+    - name: Enable and Start NFS-common service
+      service:
+        name: nfs-common.service
+        enabled: yes
+        state: restarted

@@ -1,0 +1,10 @@
+---
+- name: Remove offline packages directory
+  hosts: test_nfs
+  gather_facts: yes
+  tasks:
+  
+    - name: Remove the main files of offline packages.
+      file:
+        path: /home/sre/pkgs
+        state: absent

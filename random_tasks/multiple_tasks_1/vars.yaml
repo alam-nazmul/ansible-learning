@@ -1,0 +1,13 @@
+packages_name:
+  - /home/sre/pkgs/traceroute
+  - /home/sre/pkgs/unzip
+  - /home/sre/pkgs/zip
+  - /home/sre/pkgs/java17
+  - /home/sre/pkgs/nfs_client
+
+
+docker_pre_pkgs:
+  - /home/sre/pkgs/docker-pre
+
+docker_main_pkgs:
+  - /home/sre/pkgs/docker-main
