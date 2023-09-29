@@ -1,0 +1,27 @@
+---
+- name: Permanent NFS client mount for kamal log
+  hosts: new_vm
+  gather_facts: yes
+  tasks:
+
+    - name: Create NFS directory
+      file:
+        path: /var/lib/kamal
+        state: directory
+        owner: ubuntu
+        group: ubuntu
+        mode: '0755'
+
+    - name: Mount an NFS volume
+      ansible.posix.mount:
+        src: 192.168.190.30:/var/lib/kamal
+        path: /var/lib/kamal
+        opts: rw,sync,hard,auto
+        state: mounted
+        fstype: nfs
+
+    - name: Enable and Start NFS-client service
+      service:
+        name: nfs-client.target
+        enabled: yes
+        state: restarted

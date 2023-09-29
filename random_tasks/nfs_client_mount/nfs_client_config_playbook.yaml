@@ -1,0 +1,37 @@
+---
+- name: Install required packages
+  hosts: prod
+  become: true
+  tasks:
+
+    - name: Unmount a mounted volume
+      ansible.posix.mount:
+        path: /var/lib/kamal/csb/csb-platform/data/localfileserver
+        state: unmounted
+
+    - name: Remove the current directory
+      ansible.builtin.file:
+        path: /var/lib/kamal/csb/csb-platform/data/localfileserver
+        state: absent
+
+    - name: Create NFS directory
+      file:
+        path: /var/lib/kamal
+        state: directory
+        owner: ubuntu
+        group: ubuntu
+        mode: '0755'
+
+    - name: Mount an NFS volume
+      ansible.posix.mount:
+        src: 192.168.190.30:/var/lib/kamal
+        path: /var/lib/kamal
+        opts: rw,sync,hard,auto
+        state: mounted
+        fstype: nfs
+
+    - name: Remove the old mount point from "/etc/fstab"
+      lineinfile:
+        path: "/etc/fstab"
+        search_string: /var/lib/kamal/csb/csb-platform/data/localfileserver
+        state: absent

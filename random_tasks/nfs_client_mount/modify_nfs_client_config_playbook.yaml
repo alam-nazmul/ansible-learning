@@ -1,0 +1,32 @@
+---
+- name: Modify the NFS client IP 
+  hosts: modify_vm
+  become: true
+  tasks:
+
+    - name: Unmount a mounted volume
+      ansible.posix.mount:
+        path: /var/lib/kamal
+        state: unmounted
+
+    - name: Create NFS directory
+      file:
+        path: /var/lib/kamal
+        state: directory
+        owner: ubuntu
+        group: ubuntu
+        mode: '0755'
+
+    - name: Remove the old mount point from "/etc/fstab"
+      lineinfile:
+        path: "/etc/fstab"
+        search_string: /var/lib/kamal/
+        state: absent
+
+    - name: Mount an NFS volume
+      ansible.posix.mount:
+        src: 192.168.190.60:/var/lib/kamal
+        path: /var/lib/kamal
+        opts: rw,sync,hard,auto
+        state: mounted
+        fstype: nfs

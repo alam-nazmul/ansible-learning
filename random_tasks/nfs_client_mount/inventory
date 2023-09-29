@@ -1,0 +1,9 @@
+[modify_vm]
+192.168.190.173
+
+[new_vm]
+192.168.190.73
+
+[nfs_mount:children]
+modify_vm
+new_vm

@@ -1,0 +1,15 @@
+---
+- name: Enable and Start the installed packages
+  hosts: node_2
+  gather_facts: yes
+  tasks:
+    - name: To bypass the unit nfs-common.service is masked.
+      shell:
+        cmd: rm /lib/systemd/system/nfs-common.service; systemctl daemon-reload
+
+    - name: Enable and Start NFS-common service
+      service:
+        name: nfs-common.service
+        enabled: yes
+        state: restarted
+
