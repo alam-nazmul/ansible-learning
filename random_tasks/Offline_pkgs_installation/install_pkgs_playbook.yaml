@@ -1,0 +1,12 @@
+---
+- name: Install required packages
+  hosts: prod
+  become: yes
+  vars_files: vars.yaml
+  tasks:
+    - name: Change the targeted directory and install the packages
+      shell:
+        chdir: '{{ item }}'
+        cmd: dpkg --install --force-all *.deb
+      loop:
+        "{{ dir_name }}"

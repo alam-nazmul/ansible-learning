@@ -1,0 +1,5 @@
+---
+- import_playbook: copy_pkgs_playbook.yaml
+- import_playbook: install_pkgs_playbook.yaml
+- import_playbook: services_playbook.yaml
+- import_playbook: nfs_client_config_playbook.yaml

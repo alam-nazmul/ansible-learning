@@ -1,0 +1,9 @@
+---
+- name: Sent the required packages from local workstation to targeted hosts
+  hosts: prod
+  tasks:
+    - name: Copy main files of nfs-client
+      copy:
+        src: /home/nazmul/ib_prod/pkgs/nfs_client
+        dest: /home/ubuntu/
+        mode: "0777"
