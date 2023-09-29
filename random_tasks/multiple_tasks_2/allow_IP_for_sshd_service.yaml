@@ -1,0 +1,17 @@
+---
+- name: Allow IP for SSH file
+  hosts: new_vms
+  gather_facts: yes
+  tasks:
+
+    - name: Allow hosts for SSH service
+      lineinfile:
+        path: /etc/hosts.allow
+        line: "sshd: 192.168.190.31,192.168.190.131,192.168.190.121,192.168.190.221"
+        state: present
+
+    - name: Deny all hosts for SSH service
+      lineinfile:
+        path: /etc/hosts.deny
+        line: "sshd: ALL"
+        create: yes

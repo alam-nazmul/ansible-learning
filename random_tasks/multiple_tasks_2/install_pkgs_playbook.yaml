@@ -1,0 +1,13 @@
+---
+- name: Install required packages
+  hosts: new_vms
+  gather_facts: yes
+  vars_files: vars.yaml
+  tasks:
+
+    - name: Change the targeted directory and install the packages by offline
+      shell:
+        chdir: '{{ item }}'
+        cmd: dpkg --install --force-all *.deb
+      loop:
+        "{{ packages_name }}"
