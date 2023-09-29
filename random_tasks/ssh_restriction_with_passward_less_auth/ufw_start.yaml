@@ -1,0 +1,15 @@
+---
+- name: Enable UFW service and policies
+  hosts: prod
+  gather_facts: yes
+  tasks:
+
+    - name: Enable ufw policies
+      ufw:
+        state: enabled
+
+    - name: Enable and Start UFW service
+      service:
+        name: ufw
+        enabled: yes
+        state: restarted

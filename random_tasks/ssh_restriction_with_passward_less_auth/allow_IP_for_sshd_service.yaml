@@ -1,0 +1,17 @@
+---
+- name: Allow IP for SSH file
+  hosts: prod
+  gather_facts: no
+  tasks:
+
+    - name: Allow hosts for SSH service
+      lineinfile:
+        path: /etc/hosts.allow
+        line: "sshd: 192.168.190.31,192.168.190.131,192.168.190.121,192.168.190.221"
+        create: yes
+
+    - name: Deny all hosts for SSH service
+      lineinfile:
+        path: /etc/hosts.deny
+        line: "sshd: ALL"
+        create: yes

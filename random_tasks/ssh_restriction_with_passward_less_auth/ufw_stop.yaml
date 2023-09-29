@@ -1,0 +1,15 @@
+---
+- name: Disable UFW service and policies
+  hosts: prod
+  gather_facts: yes
+  tasks:
+
+    - name: Enable ufw policies
+      ufw:
+        state: disabled
+
+    - name: Disable and Stop UFW service
+      service:
+        name: ufw
+        enabled: no
+        state: stopped
