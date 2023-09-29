@@ -1,0 +1,45 @@
+---
+- name: Create a new user with sudo permission for Ansible operation on IB production instances.
+  hosts: prod
+  gather_facts: yes
+  tasks:
+
+    - name: Create a new user for Ansible operation.
+      user:
+        name: sre
+        password: "{{ '********' | password_hash('sha512', 'mysecrectsalt') }}"
+        comment: this user for ansible operation
+        shell: /bin/bash
+        state: present
+        create_home: yes
+        home: "/home/sre"
+
+    - name: Create the ssh directory for ansible user.
+      file:
+        path: /home/sre/.ssh
+        state: directory
+        mode: '0755'
+
+    - name: Copy my SSH auth key file to new user's directory.
+      copy:
+        src: ./authorized_keys
+        dest: /home/sre/.ssh/authorized_keys
+      notify: restart the ssh service
+
+    - name: Modify the sudoers file to allow password less full permission of "ansible" user
+      lineinfile:
+        path: /etc/sudoers
+        line: "sre ALL=(ALL) NOPASSWD:ALL"
+        create: yes
+
+    - name: Modify the sudoers file to deny password less full permission of "ubuntu" user
+      lineinfile:
+        path: /etc/sudoers
+        search_string: ubuntu
+        state: absent
+      
+  handlers:
+    - name: restart the ssh service
+      service:
+        name: sshd
+        state: restarted
