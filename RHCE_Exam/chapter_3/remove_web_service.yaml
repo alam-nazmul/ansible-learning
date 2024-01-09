@@ -1,0 +1,16 @@
+---
+- name: remove web server
+  hosts: test
+  gather_facts: yes
+  tasks:
+
+    - name: Install nginx service
+      dnf:
+        name: nginx
+        state: absent
+
+    - name: Start and enable the nginx
+      service:
+        name: nginx
+        enabled: no
+        state: stopped
