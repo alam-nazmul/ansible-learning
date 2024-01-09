@@ -45,3 +45,7 @@
 ## Check the playbooks syntax
 
 `ansible-playbook install_web_service.yaml --syntax-check`
+
+## Excute dry run
+
+`ansible-playbook install_web_service.yaml --check`
