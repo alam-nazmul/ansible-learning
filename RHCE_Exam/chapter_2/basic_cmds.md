@@ -40,3 +40,8 @@
 ## Ansible modules
 
 ![MOdules](<Screenshot from 2024-01-09 02-50-20.png>)
+
+
+## Check the playbooks syntax
+
+`ansible-playbook install_web_service.yaml --syntax-check`

@@ -1,0 +1,16 @@
+---
+- name: play to setup web server
+  hosts: test
+  gather_facts: yes
+  tasks:
+
+    - name: Install nginx service
+      dnf:
+        name: nginx
+        state: latest
+
+    - name: Start and enable the nginx
+      service:
+        name: nginx
+        enabled: yes
+        state: restarted

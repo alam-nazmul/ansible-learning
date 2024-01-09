@@ -1,0 +1,28 @@
+---
+- name: Set Firewall configuration
+  hosts: web
+  tasks:
+
+    - name: Add https service on Firewalld
+      firewalld:
+        service: https
+        permanent: yes
+        state: enabled
+
+    - name: Disable http port on Firewalld
+      firewalld:
+        port: '{ http_port }'/tcp
+        permanent: yes
+        state: disabled
+
+    - name: Disable snmp port on Firewalld
+      firewalld:
+        port: '{ snmp_port }'/udp
+        permanent: yes
+        state: disabled
+
+    - name: Add IP range on Firewalld
+      firewalld:
+        source: '{ source_ip_range}'/24
+        zone: internal
+        state: enabled

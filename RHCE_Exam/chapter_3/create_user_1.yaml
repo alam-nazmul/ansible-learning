@@ -1,0 +1,11 @@
+---
+- name: Configure important user consistently
+  hosts: test
+  gather_facts: yes
+  tasks:
+
+    - name: nazmul exists with UID 4000
+      user:
+        name: nazmul
+        uid: 1050
+        state: present
