@@ -1,0 +1,28 @@
+---
+- name: Install Filebeat pkgs
+  hosts: new
+  gather_facts: yes
+  tasks:
+
+    - name: Import RPM key
+      ansible.builtin.rpm_key:
+        key: https://artifacts.elastic.co/GPG-KEY-elasticsearch
+        state: present
+
+    - name: Download the RPM file for filebeat
+      get_url:
+        url: https://artifacts.elastic.co/downloads/beats/filebeat/filebeat-8.11.4-x86_64.rpm
+        dest: /home/alma/filebeat-8.11.4-x86_64.rpm
+
+    - name: Install Filebeat
+      yum:
+        name: /home/alma/filebeat-8.11.4-x86_64.rpm
+        state: installed
+
+    - name: Start and enable filebeat service
+      service:
+        name: filebeat
+        enabled: yes
+        state: started
+
+    
