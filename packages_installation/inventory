@@ -1,0 +1,16 @@
+[vision_load_test_nfs_client]
+192.168.191.63
+192.168.191.64
+192.168.191.65
+192.168.191.66
+
+[vision_load_test_nfs_server]
+192.168.191.67
+
+[vision_load_test:children]
+vision_load_test_nfs_client
+vision_load_test_nfs_server
+
+
+[docker_ubuntu]
+172.16.7.207
