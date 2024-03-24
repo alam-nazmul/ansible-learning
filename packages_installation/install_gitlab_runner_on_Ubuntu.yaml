@@ -1,0 +1,54 @@
+---
+- name: Install GitLab runner On Ubuntu
+  hosts: gitlab_runner
+  gather_facts: no
+  tasks:
+
+    - name: Copy the Gitlab runner GPG key
+      copy:
+        src: ./runner_gitlab-runner-archive-keyring.gpg
+        dest: /usr/share/keyrings/
+        owner: root
+        group: root
+        mode: '0644'
+
+
+    - name: Copy the GitLab repository
+      copy:
+        src: ./runner_gitlab-runner.list
+        dest: /etc/apt/sources.list.d/
+        owner: root
+        group: root
+        mode: '0644'
+
+
+    - name: Update the packages
+      apt:
+        update_cache: yes
+
+
+    - name: Install pre-requisite packages
+      apt:
+        name:
+          - vim
+          - gnupg
+          - curl
+          - debian-archive-keyring
+          - apt-transport-https
+          - gitlab-runner
+        state: present
+
+
+
+    - name: Start and enable gitlab runner
+      service:
+        name: gitlab-runner
+        enabled: yes
+        state: restarted
+
+
+    - name: Allow the sudoers file to allow password less full permission of "gitlab-runner" user
+      lineinfile:
+        path: /etc/sudoers
+        line: "gitlab-runner ALL=(ALL) NOPASSWD:ALL"
+        create: yes
