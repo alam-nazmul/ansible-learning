@@ -1,0 +1,32 @@
+---
+- name: Install cypress on Ubuntu
+  hosts: automation_test_server
+  gather_facts: no
+  tasks:
+
+    - name: Update installed packages
+      apt:
+        update_cache: yes
+
+
+    - name: Install pre-required packages
+      apt:
+        name:
+          - libgtk2.0-0
+          - libgtk-3-0
+          - libgbm-dev
+          - libnotify-dev
+          - libnss3
+          - libxss1
+          - libasound2
+          - libxtst6
+          - xauth
+          - xvfb
+        state: present
+
+
+    - name: Install "cypress" node.js package globally
+      npm:
+        name: cypress
+        global: yes
+        state: present
