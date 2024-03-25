@@ -1,0 +1,40 @@
+---
+- name: Install NodeJs20 and npm on Ubuntu
+  hosts: automation_test_server
+  gather_facts: no
+  tasks:
+
+
+    - name: Install prerequisites packages
+      apt:
+        name:
+          - curl
+          - gnupg
+        state: present
+
+
+    - name: Update the repo for NodeJs 20
+      copy:
+        src: ./nodesource.list
+        dest: /etc/apt/sources.list.d
+        mode: '0644'
+
+    - name: Copy the GPG key
+      copy:
+        src: ./nodesource.gpg
+        dest: /etc/apt/keyrings/
+        owner: root
+        group: root
+        mode: '0644'
+
+
+    - name: Update the current packages for Ubuntu
+      apt:
+        update_cache: yes
+
+
+    - name: Install the Node.js v20
+      apt:
+        name:
+        - nodejs
+        state: present
