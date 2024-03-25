@@ -1,0 +1,29 @@
+---
+- name: Install Java-17 on Ubuntu
+  hosts: automation_test_server
+  gather_facts: no
+  tasks:
+
+    - name: Update the installed packages
+      apt:
+        update_cache: yes
+
+
+    - name: Install OpenJDK-17
+      apt:
+        name:
+          - openjdk-17-jdk
+          - openjdk-17-jre
+        state: present
+
+
+    - name: Set the Java environment path
+      lineinfile:
+        path: /home/ubuntu/.bashrc
+        line: JAVA_HOME=/usr/lib/jvm/jdk-17
+        create: yes
+
+    - name: Active the Java environment variable
+      shell:
+        cmd: "source /etc/environment"
+        executable: /bin/bash
