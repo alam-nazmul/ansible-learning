@@ -1,0 +1,10 @@
+---
+- name: Modify a file by using "Copy content" module
+  hosts: test
+  gather_facts: yes
+  tasks:
+
+    - name: Edit a file
+      copy:
+        dest: /etc/hosts
+        content: '9.9.9.9 quad-9'
