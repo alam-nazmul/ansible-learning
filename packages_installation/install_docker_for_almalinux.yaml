@@ -1,0 +1,43 @@
+---
+- name: Install Docker in almalinux
+  hosts: vision_load_test
+  gather_facts: yes
+  tasks:
+
+    - name: Install yum utils
+      dnf:
+        name:
+          - yum-utils
+          - vim
+          - wget
+          - curl
+        state: present
+
+    - name: Add repository for docker-ce
+      copy:
+        src: ./docker-ce.repo
+        dest: /etc/yum.repos.d/
+        owner: root
+        group: root
+        mode: '0644'
+
+
+    - name: Install Docker main packages
+      dnf:
+        name:
+          - docker-ce
+          - docker-ce-cli
+          - containerd.io
+          - docker-compose-plugin
+
+    - name: Start the Docker service
+      service:
+        name: docker
+        state: restarted
+        enabled: yes
+
+    - name: Add "almalinux" user on docker group
+      user:
+        name: almalinux
+        groups: docker
+        append: yes

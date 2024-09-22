@@ -1,0 +1,32 @@
+---
+- name: Install GitLab runner On Ubuntu
+  hosts: gitlab_runner_alma
+  gather_facts: no
+  tasks:
+
+
+    - name: Upgrade all packages
+      dnf:
+        name: "*"
+        state: latest
+
+
+    - name: Install Gitlab-runner
+      dnf:
+        name: 'https://gitlab-runner-downloads.s3.amazonaws.com/latest/rpm/gitlab-runner_amd64.rpm'
+        state: present
+        disable_gpg_check: yes
+
+
+    - name: Start and enable gitlab runner
+      service:
+        name: gitlab-runner
+        enabled: yes
+        state: restarted
+
+
+    - name: Allow the sudoers file to allow password less full permission of "gitlab-runner" user
+      lineinfile:
+        path: /etc/sudoers
+        line: "gitlab-runner ALL=(ALL) NOPASSWD:ALL"
+        create: yes
