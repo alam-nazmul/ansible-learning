@@ -1,16 +1,17 @@
 ---
-- name: play to setup web server
+- name: Play to setup web server
   hosts: test
   gather_facts: yes
   tasks:
 
-    - name: Install nginx service
+    - name: Install the httpd service
       dnf:
-        name: nginx
-        state: latest
+        name: httpd
+        state: present
 
-    - name: Start and enable the nginx
+
+    - name: Enable and restart the http service
       service:
-        name: nginx
+        name: httpd
         enabled: yes
         state: restarted
