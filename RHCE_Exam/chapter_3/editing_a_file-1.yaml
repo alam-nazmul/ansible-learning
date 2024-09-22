@@ -1,0 +1,11 @@
+---
+- name: Modify a file
+  hosts: test
+  gather_facts: yes
+  tasks:
+
+    - name: Modify the /etc/hosts by lineinfile module
+      lineinfile:
+        path: /etc/hosts
+        line: '8.8.8.8 public-ns'
+        state: present
