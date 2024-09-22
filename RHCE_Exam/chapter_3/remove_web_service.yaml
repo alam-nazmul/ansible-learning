@@ -1,16 +1,16 @@
 ---
-- name: remove web server
+- name: Play to remove the HTTPD packages
   hosts: test
   gather_facts: yes
   tasks:
 
-    - name: Install nginx service
-      dnf:
-        name: nginx
-        state: absent
-
-    - name: Start and enable the nginx
+    - name: Stop the Httpd service
       service:
-        name: nginx
+        name: httpd
         enabled: no
         state: stopped
+
+    - name: Remove the httpd packages
+      dnf:
+        name: httpd
+        state: absent
