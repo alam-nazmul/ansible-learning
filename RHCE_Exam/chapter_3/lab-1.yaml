@@ -1,0 +1,21 @@
+---
+- name: Install and Start the Apache server
+  hosts: test
+  gather_facts: yes
+  tasks:
+
+    - name: Install the apache packages
+      dnf:
+        name: httpd
+        state: present
+
+    - name: Correct the index file is present
+      copy:
+        src: ./index.html
+        dest: /var/www/html/index.html
+
+    - name: Enable and Start the httpd service
+      service:
+        name: httpd
+        enabled: yes
+        state: restarted

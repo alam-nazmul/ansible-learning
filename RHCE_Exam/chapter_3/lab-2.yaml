@@ -1,0 +1,48 @@
+---
+- name: Multiple playbooks
+  hosts: test
+  gather_facts: yes
+  tasks:
+
+    - name: Install HTTPD and FIREWALLD packages
+      dnf:
+        name:
+          - httpd
+          - firewalld
+        state: present
+
+    - name: Modify the index file
+      copy:
+        content: 'Hi, This is Tusher'
+        dest: /var/www/html/index.html
+
+    - name: Enable and Start the HTTPD service
+      service:
+        name: httpd
+        enabled: yes
+        state: restarted
+
+    - name: Enable and Start the Firewalld
+      service:
+        name: firewalld
+        state: restarted
+        enabled: yes
+
+    - name: Add httpd service on Firewalld
+      firewalld:
+        service: http
+        permanent: yes
+        immediate: yes
+        state: enabled
+
+
+- name: Test the output
+  hosts: test
+  gather_facts: yes
+  tasks:
+
+    - name: Connect and test the web server
+      uri:
+        url: http://172.16.7.227
+        return_content: true
+        status_code: 200

@@ -1,0 +1,57 @@
+---
+- name: Enable internet service
+  hosts: test
+  gather_facts: yes
+  tasks:
+
+    - name: Install the packages
+      dnf:
+        name:
+          - firewalld
+          - httpd
+          - php
+          - mariadb-server
+          - php-mysqlnd
+        state: present
+
+    - name: Enable and Start httpd service
+      service:
+        name: httpd
+        enabled: yes
+        state: restarted
+
+    - name: Enable and Start Mariadb service
+      service:
+        name: mariadb
+        state: restarted
+        enabled: yes
+
+    - name: Enable and Start the Firewalld service
+      service:
+        name: firewalld
+        state: restarted
+        enabled: yes
+
+    - name: Add httpd service on Firewalld
+      firewalld:
+        service: http
+        permanent: yes
+        state: enabled
+        immediate: yes
+
+    - name: Index context modify
+      get_url:
+        url: http://materials.example.com/labs/playbook-review/index.php"
+        dest: /var/www/html/index.php
+        mode: 0644
+
+
+- name: Test the web context
+  hosts: test
+  tasks:
+
+    - name: test the web content
+      uri:
+        url: 172.16.7.227
+        status_code: 200
+        return_content: yes
