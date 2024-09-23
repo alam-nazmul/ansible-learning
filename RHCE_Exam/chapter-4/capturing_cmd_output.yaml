@@ -1,0 +1,14 @@
+---
+- name: Installs a package and prints the results
+  hosts: test
+  gather_facts: yes
+  tasks:
+
+    - name: Install the packages
+      dnf:
+        name: nginx
+        state: installed
+      register: installation_result
+
+    - debug:
+        var: installation_result
