@@ -1,0 +1,55 @@
+---
+- name: Deploy and start Apache service
+  hosts: test
+  gather_facts: yes
+  vars:
+    web_pkg: httpd
+    firewall_pkg: firewalld
+    web_service: httpd
+    firewall_service: firewalld
+    python_pkg: python3-PyMySQL
+    rule: http
+  tasks:
+
+    - name: Required packages are installed and up to date
+      dnf:
+        name:
+          - "{{ web_pkg }}"
+          - "{{ firewall_pkg }}"
+          - "{{ python_pkg }}"
+        state: latest
+
+    - name: The {{ firewall_pkg }} service is enable and start
+      service:
+        name: "{{ firewall_pkg }}"
+        enabled: true
+        state: started
+
+    - name: The {{ web_service }} service is enable and start
+      service:
+        name: "{{ web_service }}"
+        enabled: yes
+        state: started
+
+    - name: The firewall port for {{ rule }} is open
+      firewalld:
+        service: "{{ rule }}"
+        immediate: yes
+        permanent: yes
+        state: enabled
+
+
+- name: Verify the apache service
+  hosts: test
+  gather_facts: yes
+  tasks:
+
+    - name: Ensure the webserver is reachable
+      uri:
+        url: http://172.16.7.227
+        status_code: 200
+        return_content: yes
+      register: result
+
+    - debug:
+        var: result
