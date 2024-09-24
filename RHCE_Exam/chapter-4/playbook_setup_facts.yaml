@@ -1,0 +1,30 @@
+---
+- name: Install remote facts
+  hosts: test
+  gather_facts: yes
+  vars:
+    remote_dir: /etc/ansible/fact.d
+    facts_file: custom.fact
+  tasks:
+
+    - name: Create the remote directory
+      file:
+        state: directory
+        path: "{{ remote_dir }}"
+        recurse: true
+
+    - name: Copy the facts file
+      copy:
+        src: "{{ facts_file }}"
+        dest: "{{ remote_dir }}"
+
+## ansible test -m setup | grep ansible_local -C 10
+
+    - name: Install Apache server
+      dnf:
+        name: "{{ ansible_facts['ansible_local']['custom']['general']['package'] }}"
+        state: latest
+
+    - name: Start the Apache service
+      service:
+        name: "{{ ansible_facts['ansible_local']['custom']['general']['service'] }}"
