@@ -1,0 +1,50 @@
+---
+- name: lab for chapter-1 (variables)
+  hosts: test
+  gather_facts: yes
+  vars:
+    firewall_pkg: firewalld
+    firewall_svc: firewalld
+    web_pkg: httpd
+    web_svc: httpd
+    ssl_pkg: mod_ssl
+    httpdconf_src: files/httpd.conf
+    httpdconf_dest: /etc/httpd/conf/httpd.conf
+    htaccess_src: files/.htaccess
+    secrets_dir: /etc/httpd/secrets
+    secrets_src: files/htpasswd
+    secrets_dest: "{{ secrets_dir }}/htpasswd"
+    web_root: /var/www/html
+  tasks:
+
+    - name: Install the required packages
+      dnf:
+        name:
+          - "{{ firewall_pkg }}"
+          - "{{ web_pkg }}"
+          - "{{ ssl_pkg }}"
+        state: latest
+
+    - name: Copy the httpd config file
+      copy:
+        src: "{{ httpdconf_src }}"
+        dest: "{{ httpdconf_dest }}"
+        owner: root
+        group: root
+        mode: 0644
+
+    - name: Create the secret directory
+      file:
+        state: directory
+        path: "{{ secrets_dir }}"
+        owner: apache
+        group: apache
+        mode: 0500
+
+    - name: Copy the htpasswd file
+      copy:
+        src: "{{ secrets_src }}"
+        dest: "{{ secrets_dest }}"
+        owner: apache
+        group: apache
+        mode: 0400
